@@ -16,13 +16,15 @@ public class FunctionFormat {
             gui.wordWrapOn = true;
             gui.textArea.setLineWrap(true);
             gui.textArea.setWrapStyleWord(true);
-            gui.iWrap.setText("Word Wrap: ON");
+//            gui.iWrap.setText("Word Wrap: ON");
+            gui.wordWarp.setText("Word Warp: ON");
         }
         else if(gui.wordWrapOn==true){
             gui.wordWrapOn = false;
             gui.textArea.setLineWrap(false);
             gui.textArea.setWrapStyleWord(false);
-            gui.iWrap.setText("Word Wrap: OFF");
+//            gui.iWrap.setText("Word Wrap: OFF");
+            gui.wordWarp.setText("Word Warp: OFF");
         }
     }
 

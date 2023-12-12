@@ -3,6 +3,7 @@ import javax.swing.*;
 import javax.swing.event.UndoableEditEvent;
 import javax.swing.event.UndoableEditListener;
 import javax.swing.undo.UndoManager;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -17,16 +18,17 @@ public class GUI implements ActionListener {
 
 //    Top Menu Bar
     JMenuBar menuBar;
-    JMenu menuFile, menuEdit, menuFormat, menuColor;
+    JMenu menuFile, menuEdit, menuColor;
+
+//    Tool Bar
+    JToolBar toolBar;
+    JComboBox fontSize, fontOption;
+    JButton wordWarp;
 
 //    File Menu
     JMenuItem iNew, iOpen, iSave, iSaveAs, iExit;
 //    Edit Menu
     JMenuItem iUndo, iRedo;
-//    Format Menu
-    JMenuItem iWrap, iFontArial, iFontCSMS, iFontTNR, iFontSize8, iFontSize12, iFontSize16,
-    iFontSize20, iFontSize24, iFontSize28;
-    JMenu menuFont, menuFontSize;
 //    Color menu
     JMenuItem iColor1, iColor2, iColor3;
 
@@ -45,8 +47,8 @@ public class GUI implements ActionListener {
         createWindow();
         createTextArea();
         createMenuBar();
+        createToolBar();
         createFileMenu();
-        createFormatMenu();
         createColorMenu();
         createEditMenu();
 
@@ -104,11 +106,35 @@ public class GUI implements ActionListener {
         menuEdit = new JMenu("Edit");
         menuBar.add(menuEdit);
 
-        menuFormat = new JMenu("Format");
-        menuBar.add(menuFormat);
-
         menuColor = new JMenu("Color");
         menuBar.add(menuColor);
+    }
+
+//    creates tool bar
+    public void createToolBar(){
+        toolBar = new JToolBar();
+        toolBar.setFloatable(false);
+        Container container = window.getContentPane();
+        container.add(toolBar, BorderLayout.NORTH);
+
+        toolBar.add(new JLabel("Font Size  "));
+        fontSize = new JComboBox(new String[] {"8", "12", "16", "20", "24", "28"});
+        fontSize.addActionListener(this::actionPerformed);
+        toolBar.add(fontSize);
+
+        toolBar.addSeparator();
+
+        toolBar.add(new JLabel("Font  "));
+        fontOption = new JComboBox(new String[] {"Arial", "Comic Sans MS", "Times New Roman"});
+        fontOption.addActionListener(this::actionPerformed);
+        toolBar.add(fontOption);
+
+        toolBar.addSeparator();
+
+        wordWarp = new JButton("Word Warp: ON");
+        wordWarp.setFocusable(false);
+        wordWarp.addActionListener(this::actionPerformed);
+        toolBar.add(wordWarp);
     }
 
 //    creates file menu
@@ -139,65 +165,6 @@ public class GUI implements ActionListener {
         menuFile.add(iExit);
 
 
-    }
-
-//    create format menu
-    public void createFormatMenu(){
-        iWrap = new JMenuItem("Word Wrap: OFF");
-        iWrap.addActionListener(this::actionPerformed);
-        iWrap.setActionCommand("Wrap");
-        menuFormat.add(iWrap);
-
-        menuFont = new JMenu("Font");
-        menuFormat.add(menuFont);
-
-        iFontArial = new JMenuItem("Arial");
-        iFontArial.addActionListener(this::actionPerformed);
-        iFontArial.setActionCommand("Arial");
-        menuFont.add(iFontArial);
-
-        iFontCSMS = new JMenuItem("Comic Sans MS");
-        iFontCSMS.addActionListener(this::actionPerformed);
-        iFontCSMS.setActionCommand("Comic Sans MS");
-        menuFont.add(iFontCSMS);
-
-        iFontTNR = new JMenuItem("Times New Roman");
-        iFontTNR.addActionListener(this::actionPerformed);
-        iFontTNR.setActionCommand("Times New Roman");
-        menuFont.add(iFontTNR);
-
-        menuFontSize = new JMenu("Font Size");
-        menuFormat.add(menuFontSize);
-
-        iFontSize8 = new JMenuItem("8");
-        iFontSize8.addActionListener(this::actionPerformed);
-        iFontSize8.setActionCommand("fontSize8");
-        menuFontSize.add(iFontSize8);
-
-        iFontSize12 = new JMenuItem("12");
-        iFontSize12.addActionListener(this::actionPerformed);
-        iFontSize12.setActionCommand("fontSize12");
-        menuFontSize.add(iFontSize12);
-
-        iFontSize16 = new JMenuItem("16");
-        iFontSize16.addActionListener(this::actionPerformed);
-        iFontSize16.setActionCommand("fontSize16");
-        menuFontSize.add(iFontSize16);
-
-        iFontSize20 = new JMenuItem("20");
-        iFontSize20.addActionListener(this::actionPerformed);
-        iFontSize20.setActionCommand("fontSize20");
-        menuFontSize.add(iFontSize20);
-
-        iFontSize24 = new JMenuItem("24");
-        iFontSize24.addActionListener(this::actionPerformed);
-        iFontSize24.setActionCommand("fontSize24");
-        menuFontSize.add(iFontSize24);
-
-        iFontSize28 = new JMenuItem("28");
-        iFontSize28.addActionListener(this::actionPerformed);
-        iFontSize28.setActionCommand("fontSize28");
-        menuFontSize.add(iFontSize28);
     }
 
 //    create color menu
@@ -236,6 +203,35 @@ public class GUI implements ActionListener {
 //
     @Override
     public void actionPerformed(ActionEvent e) {
+
+        if(e.getSource()==fontSize){
+//            Get the action command associated with the event
+            String command = String.valueOf(fontSize.getSelectedItem());
+//            Use a switch statement to determine the action based on the command
+            switch (command){
+                case "8": format.createFont(8); break;
+                case "12": format.createFont(12); break;
+                case "16": format.createFont(16); break;
+                case "20": format.createFont(20); break;
+                case "24": format.createFont(24); break;
+                case "28": format.createFont(28); break;
+            }
+        }
+
+        if(e.getSource()==fontOption){
+//             Get the action command associated with the event
+            String command = String.valueOf(fontOption.getSelectedItem());
+//            Use a switch statement to determine the action based on the command
+            switch (command){
+                case "Arial": format.setFont(command); break;
+                case "Comic Sans MS": format.setFont(command); break;
+                case "Times New Roman": format.setFont(command); break;
+            }
+        }
+
+        if(e.getSource()==wordWarp){
+            format.wordWrap();
+        }
 //        Get the action command associated with the event
         String command = e.getActionCommand();
 
@@ -248,16 +244,6 @@ public class GUI implements ActionListener {
             case "Exit": file.exitFile(); break;
             case "Undo": edit.Undo(); break;
             case "Redo": edit.Redo(); break;
-            case "Wrap": format.wordWrap(); break;
-            case "Arial": format.setFont(command); break;
-            case "Comic Sans MS": format.setFont(command); break;
-            case "Times New Roman": format.setFont(command); break;
-            case "fontSize8": format.createFont(8); break;
-            case "fontSize12": format.createFont(12); break;
-            case "fontSize16": format.createFont(16); break;
-            case "fontSize20": format.createFont(20); break;
-            case "fontSize24": format.createFont(24); break;
-            case "fontSize28": format.createFont(28); break;
             case "White": color.ChangeColor(command); break;
             case "Black": color.ChangeColor(command); break;
             case "Blue": color.ChangeColor(command); break;

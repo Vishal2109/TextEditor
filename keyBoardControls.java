@@ -7,10 +7,6 @@ public class keyBoardControls implements KeyListener {
     public keyBoardControls(GUI gui){
         this.gui = gui;
     }
-    @Override
-    public void keyTyped(KeyEvent e) {
-
-    }
 
 //    creates keyboard ShortCuts
     @Override
@@ -37,6 +33,10 @@ public class keyBoardControls implements KeyListener {
         }
     }
 
+    @Override
+    public void keyTyped(KeyEvent e) {
+
+    }
     @Override
     public void keyReleased(KeyEvent e) {
 
